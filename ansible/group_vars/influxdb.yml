@@ -1,0 +1,4 @@
+---
+influxdb_username: <<username>>
+influxdb_database_name: homelab
+influxdb_password: <<password>>
