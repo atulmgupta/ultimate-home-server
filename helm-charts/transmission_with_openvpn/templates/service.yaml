@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "transmission_with_openvpn.fullname" . }}
+  labels:
+    {{- include "transmission_with_openvpn.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "transmission_with_openvpn.selectorLabels" . | nindent 4 }}
