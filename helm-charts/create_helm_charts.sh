@@ -28,17 +28,16 @@ applications=(
     "uptime-kuma" "vscodeeditor" "watchtower" "webtop" "whoogle" "wikijs" "wireguard"
     "wireshark" "wizarr" "wordle" "youtubedlmaterial" "znc"
 )
-
 # Loop through the application names and create Helm charts
 for app in "${applications[@]}"; do
     # Convert names to lowercase and replace dashes with underscores
     formatted_name=$(echo "$app" | tr '[:upper:]' '[:lower:]' | tr '-' '_')
-    echo "Creating Helm chart for $formatted_name"
+    echo "Initializing Helm chart: $formatted_name"
     helm create "$formatted_name"
-
-    # Add a placeholder file to the templates directory
+    echo "Adding placeholder to the templates directory for $formatted_name"
     touch "$formatted_name/templates/placeholder.yaml"
+    echo "Adding .gitkeep to charts directory for $formatted_name"
+    touch "$formatted_name/charts/.gitkeep"
 done
 
-echo "Charts creation completed."
-
+echo "All charts have been initialized."
