@@ -1,0 +1,4 @@
+---
+guacamole_available_externally: true
+guacamole_data_directory: "{{ docker_home }}/guacamole"
+guacamole_port: "8199"

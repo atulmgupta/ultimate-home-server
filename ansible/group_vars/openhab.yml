@@ -1,0 +1,6 @@
+---
+openhab_available_externally: true
+openhab_docker_image: openhab/openhab:latest
+openhab_data_directory: "{{ docker_home }}/openhab"
+openhab_port_http: "7777"
+openhab_port_https: "7778"

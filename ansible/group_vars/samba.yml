@@ -1,0 +1,107 @@
+---
+samba_shares_root: /dozer
+downloads_root: "{{ samba_shares_root }}/downloads"
+movies_root: "{{ samba_shares_root }}/movies"
+tv_root: "{{ samba_shares_root }}/tv"
+torrents_root: "{{ samba_shares_root }}/torrents"
+music_root: "{{ samba_shares_root }}/music"
+podcasts_root: "{{ samba_shares_root }}/podcasts"
+books_root: "{{ samba_shares_root }}/books"
+audiobooks_root: "{{ samba_shares_root }}/audiobooks"
+comics_root: "{{ samba_shares_root }}/comics"
+photos_root: "{{ samba_shares_root }}/photos"
+documents_root: "{{ samba_shares_root }}/documents"
+samba_server_string: Ansible NAS
+samba_shares:
+  - name: downloads
+    comment: 'Stuff downloaded'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ downloads_root }}"
+  - name: movies
+    comment: 'Movies'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ movies_root }}"
+  - name: tv
+    comment: 'TV Episodes'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ tv_root }}"
+  - name: music
+    comment: 'Music'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ music_root }}"
+  - name: podcasts
+    comment: 'Podcasts'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ podcasts_root }}"
+  - name: dump
+    comment: 'File dump'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ samba_shares_root }}/dump"
+  - name: games
+    comment: 'Games'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ samba_shares_root }}/games"
+  - name: photos
+    comment: 'Pictures'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ photos_root }}"
+  - name: books
+    comment: 'Books'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ books_root }}"
+  - name: audiobooks
+    comment: 'Audiobooks'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ audiobooks_root }}"
+  - name: comics
+    comment: 'Comics'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ comics_root }}"
+  - name: documents
+    comment: 'Documents'
+    guest_ok: yes
+    public: yes
+    writable: yes
+    browseable: yes
+    path: "{{ documents_root }}"
+nfs_shares_root: /dozer/Volume3
+nfs_exports:
+  - "{{ nfs_shares_root }}/public *(rw,sync,no_root_squash)"
+samba_mitigate_cve_2017_7494: false
+samba_apple_extensions: yes
+samba_guest_account: ansible-nas
+samba_map_to_guest: Bad Password
+samba_netbios_name: "{{ ansible_nas_hostname }}"
