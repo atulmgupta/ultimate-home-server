@@ -1,0 +1,21 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ombi-ingress
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`{{ .Values.network.hostname }}.{{ .Values.traefik.domain }}`)
+      kind: Rule
+      services:
+        - name: ombi
+          port: 3579
+      middlewares:
+        - name: {{ .Values.traefik.middlewares }}
+  tls:
+    certResolver: {{ .Values.traefik.certresolver }}
+    domains:
+      - main: "{{ .Values.traefik.domain }}"
+        sans:
+          - "*.{{ .Values.traefik.domain }}"
