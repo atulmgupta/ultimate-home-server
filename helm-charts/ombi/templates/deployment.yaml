@@ -1,68 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ombi.fullname" . }}
-  labels:
-    {{- include "ombi.labels" . | nindent 4 }}
+  name: ombi
 spec:
-  {{- if not .Values.autoscaling.enabled }}
-  replicas: {{ .Values.replicaCount }}
-  {{- end }}
+  replicas: 1
   selector:
     matchLabels:
-      {{- include "ombi.selectorLabels" . | nindent 6 }}
+      app: ombi
   template:
     metadata:
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       labels:
-        {{- include "ombi.labels" . | nindent 8 }}
-        {{- with .Values.podLabels }}
-        {{- toYaml . | nindent 8 }}
-        {{- end }}
+        app: ombi
     spec:
-      {{- with .Values.imagePullSecrets }}
-      imagePullSecrets:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      serviceAccountName: {{ include "ombi.serviceAccountName" . }}
-      securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
-          securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: ombi
+          image: linuxserver/ombi
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-              protocol: TCP
-          livenessProbe:
-            {{- toYaml .Values.livenessProbe | nindent 12 }}
-          readinessProbe:
-            {{- toYaml .Values.readinessProbe | nindent 12 }}
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-          {{- with .Values.volumeMounts }}
+            - containerPort: 3579
+              hostPort: {{ .Values.network.port }}
           volumeMounts:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-      {{- with .Values.volumes }}
+            - mountPath: /config
+              name: config-volume
+          env:
+            - name: TZ
+              value: {{ .Values.env.timezone }}
+            - name: PUID
+              value: {{ .Values.uid }}
+            - name: PGID
+              value: {{ .Values.gid }}
+          resources:
+            limits:
+              memory: {{ .Values.specs.memory }}
+          restartPolicy: Always
+          securityContext:
+            runAsUser: {{ .Values.uid }}
+            runAsGroup: {{ .Values.gid }}
       volumes:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        - name: config-volume
+          hostPath:
+            path: {{ .Values.directories.configDirectory }}
