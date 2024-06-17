@@ -1,0 +1,13 @@
+# create persistant volume claim
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "redis.fullname" . }}-data
+  labels:
+    app: {{ include "redis.name" . }}
+spec:
+  accessModes:
+    - {{ .Values.persistance.accessMode }}
+  resources:
+    requests:
+      storage: {{ .Values.persistance.size }}
