@@ -1,9 +1,9 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "ddns-updater.fullname" . }}
+  name: {{ include "ddns_updater.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+    app.kubernetes.io/name: {{ include "ddns_updater.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/version: {{ .Chart.AppVersion }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
@@ -11,12 +11,12 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+      app.kubernetes.io/name: {{ include "ddns_updater.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+        app.kubernetes.io/name: {{ include "ddns_updater.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       containers:
@@ -25,19 +25,19 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: LOG_LEVEL
-              value: {{ .Values.config.log_level }}
+              value: {{ .Values.config.log_level | quote }}
             - name: UPDATE_PERIOD
-              value: {{ .Values.config.update_period }}
+              value: {{ .Values.config.update_period | quote }}
             - name: DELAY_START
-              value: {{ .Values.config.delay_start }}
+              value: {{ .Values.config.delay_start | quote }}
             - name: PUBLICIP_FETCHERS
-              value: {{ join "," .Values.config.public_ip_fetchers }}
+              value: {{ join "," .Values.config.public_ip_fetchers | quote }}
             - name: PROVIDER
-              value: {{ (index .Values.config.records 0).provider }}
+              value: {{ (index .Values.config.records 0).provider | quote }}
             - name: DOMAIN
-              value: {{ (index .Values.config.records 0).domain }}
+              value: {{ (index .Values.config.records 0).domain | quote }}
             - name: HOST
-              value: {{ (index .Values.config.records 0).host }}
+              value: {{ (index .Values.config.records 0).host | quote }}
             - name: KEY
               valueFrom:
                 secretKeyRef:
@@ -49,9 +49,9 @@ spec:
                   name: ddns-updater-secret
                   key: email
             - name: TTL
-              value: {{ (index .Values.config.records 0).ttl }}
+              value: {{ (index .Values.config.records 0).ttl | quote }}
             - name: IP_VERSION
-              value: {{ (index .Values.config.records 0).ip_version }}
+              value: {{ (index .Values.config.records 0).ip_version | quote }}
             - name: PROXIED
               value: {{ (index .Values.config.records 0).proxied | quote }}
           resources:
