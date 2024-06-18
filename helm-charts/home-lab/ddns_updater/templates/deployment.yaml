@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "ddns-updater.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/version: {{ .Chart.AppVersion }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "ddns-updater.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: ddns-updater
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: LOG_LEVEL
+              value: {{ .Values.config.log_level }}
+            - name: UPDATE_PERIOD
+              value: {{ .Values.config.update_period }}
+            - name: DELAY_START
+              value: {{ .Values.config.delay_start }}
+            - name: PUBLICIP_FETCHERS
+              value: {{ join "," .Values.config.public_ip_fetchers }}
+            - name: PROVIDER
+              value: {{ (index .Values.config.records 0).provider }}
+            - name: DOMAIN
+              value: {{ (index .Values.config.records 0).domain }}
+            - name: HOST
+              value: {{ (index .Values.config.records 0).host }}
+            - name: KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ddns-updater-secret
+                  key: key
+            - name: EMAIL
+              valueFrom:
+                secretKeyRef:
+                  name: ddns-updater-secret
+                  key: email
+            - name: TTL
+              value: {{ (index .Values.config.records 0).ttl }}
+            - name: IP_VERSION
+              value: {{ (index .Values.config.records 0).ip_version }}
+            - name: PROXIED
+              value: {{ (index .Values.config.records 0).proxied | quote }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
