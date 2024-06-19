@@ -12,39 +12,20 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Setup Helm
-        uses: azure/setup-helm@v1
+      - name: Configure Git
+        run: |
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Run chart-releaser
-        id: cr
         uses: helm/chart-releaser-action@v1.6.0
-        with:
-          charts_dir: ./charts
-          release_branch: gh-pages
         env:
-          CR_TOKEN: ${{ secrets.access_token }}
-
-      - name: Update index.yaml
-        run: |
-          mkdir -p docs
-          if [ -d .cr-release-packages ]; then
-            cp -r .cr-release-packages/* docs/
-          else
-            echo "No release packages found in .cr-release-packages"
-          fi
-          if [ -f docs/index.yaml ]; then
-            helm repo index docs --url https://atulmgupta.github.io/ultimate-home-server-helm-charts --merge docs/index.yaml
-          else
-            helm repo index docs --url https://atulmgupta.github.io/ultimate-home-server-helm-charts
-          fi
-          
-      - name: Push changes to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.access_token }}
-          publish_dir: ./docs
+          CR_TOKEN: "${{ secrets.access_token }}"
