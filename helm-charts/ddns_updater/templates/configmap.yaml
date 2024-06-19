@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: ddns-updater-config
+  name: {{ include "ddns_updater.fullname" . }}
 data:
   config.json: |
     {
