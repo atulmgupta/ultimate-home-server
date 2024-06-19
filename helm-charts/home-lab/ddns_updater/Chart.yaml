@@ -1,6 +1,0 @@
-apiVersion: v2
-name: ddns-updater
-description: A Helm chart for the ddns-updater
-type: application
-version: 1.0.0
-appVersion: "latest"

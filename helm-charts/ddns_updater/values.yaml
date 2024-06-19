@@ -3,24 +3,30 @@ replicaCount: 1
 image:
   repository: qmcgaw/ddns-updater
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: "v2.7.1"
 
 service:
   type: ClusterIP
-  port: 80
+  port: 8000
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 config:
   log_level: info
   update_period: 10m
   delay_start: 0s
   public_ip_fetchers:
-    - all
-  public_ip_http_providers:
-    - all
+    - opendns
+    - google
   records:
-    - provider: "cloudflare"
-      domain: "example.com"
-      zone_identifier: "Some Id"
+    - provider: cloudflare
+      domain: example.com
       host: "@"
       key: "<Your-Cloudflare-API-Key>"
       email: "<Your-Cloudflare-Email>"
