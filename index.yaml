@@ -1,0 +1,58 @@
+apiVersion: v1
+entries:
+  authelia:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-06-19T01:52:19.326227531Z"
+    description: A Helm chart for Authelia
+    digest: c26e4c96be695baf3d1c2927e9de15402a220434c4496926a83ca6da81790d71
+    name: authelia
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/authelia-0.1.0/authelia-0.1.0.tgz
+    version: 0.1.0
+  ddns-updater:
+  - apiVersion: v2
+    appVersion: 2.7.1
+    created: "2024-06-19T01:52:19.471665846Z"
+    description: A Helm chart for the DDNS Updater
+    digest: a3eaefcfb0d1cde914968498b120f6125a1447391f42df225637f6d6b6e8356c
+    name: ddns-updater
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-0.3.0/ddns-updater-0.3.0.tgz
+    version: 0.3.0
+  portainer:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-19T01:52:19.622084261Z"
+    description: A Helm chart for Kubernetes
+    digest: f026776164311c9483df9783f9f0a394ca9b2b0a2d9d9c26756327a0714222ab
+    name: portainer
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/portainer-0.1.0/portainer-0.1.0.tgz
+    version: 0.1.0
+  redis:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-06-19T01:52:19.785999731Z"
+    description: A Helm chart for Redis
+    digest: 408b3adf3c617359daa4a75f23d71af6b794c51313bd3c656c5b4f82a5aca8f4
+    name: redis
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/redis-0.8.0/redis-0.8.0.tgz
+    version: 0.8.0
+  traefik:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-06-19T01:52:19.95329163Z"
+    description: A Helm chart for Kubernetes
+    digest: 4da894f931051ecff8fde73e7420afe84a19132ba48bd08af0d333c0e8b1ee82
+    name: traefik
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/traefik-0.1.0/traefik-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-06-19T01:52:19.953305987Z"
