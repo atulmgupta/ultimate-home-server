@@ -14,6 +14,16 @@ entries:
   ddns-updater:
   - apiVersion: v2
     appVersion: 2.7.1
+    created: "2024-06-19T03:52:17.562832777Z"
+    description: A Helm chart for the DDNS Updater
+    digest: fbc1089f94fb271d2eb4f87f93a2f6b90eb718a9b91c3c6c5424fa220c64ca83
+    name: ddns-updater
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-1.2.0/ddns-updater-1.2.0.tgz
+    version: 1.2.0
+  - apiVersion: v2
+    appVersion: 2.7.1
     created: "2024-06-19T03:31:13.423035268Z"
     description: A Helm chart for the DDNS Updater
     digest: 5ad5d3a04d821fd1c493ac5713c89c50878f5fe5577d8e350fab93a9a9e740c9
@@ -125,4 +135,4 @@ entries:
     urls:
     - https://github.com/atulmgupta/ultimate-home-server/releases/download/traefik-0.1.0/traefik-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-19T03:31:13.423065334Z"
+generated: "2024-06-19T03:52:17.562876399Z"
