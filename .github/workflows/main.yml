@@ -7,7 +7,6 @@ on:
   pull_request:
     branches:
       - master
-  workflow_dispatch: # This enables the manual trigger
 
 jobs:
   release:
@@ -29,5 +28,6 @@ jobs:
         uses: helm/chart-releaser-action@v1.6.0
         with:
           charts_dir: helm-charts
+          skip_existing: true
         env:
           CR_TOKEN: "${{ secrets.access_token }}"
