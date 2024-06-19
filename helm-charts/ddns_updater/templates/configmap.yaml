@@ -5,12 +5,10 @@ metadata:
 data:
   config.json: |
     {
-      "config": {
         "log_level": "{{ .Values.config.log_level }}",
         "update_period": "{{ .Values.config.update_period }}",
         "delay_start": "{{ .Values.config.delay_start }}",
         "public_ip_fetchers": {{ toJson .Values.config.public_ip_fetchers }},
         "public_ip_http_providers": {{ toJson .Values.config.public_ip_http_providers }},
         "records": {{ toJson .Values.config.records }}
-      }
     }
