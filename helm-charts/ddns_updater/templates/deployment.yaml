@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ include "ddns_updater.fullname" . }}
   labels:
-    app: {{ include "ddns_updater.name" . }}
+    app: {{ include "ddns_updater.name1" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
