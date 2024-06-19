@@ -6,7 +6,7 @@ data:
   config.json: |
     {
       "config": {
-        "log_level": "{{ .Values.config.log_level }}",
+        "log_level": "{{ .Values.config.log_level1 }}",
         "update_period": "{{ .Values.config.update_period }}",
         "delay_start": "{{ .Values.config.delay_start }}",
         "public_ip_fetchers": {{ toJson .Values.config.public_ip_fetchers }},
