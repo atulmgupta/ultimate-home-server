@@ -20,7 +20,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: config-volume
-              mountPath: /etc/ddns-updater
+              mountPath: /etc/ddns-updater/config.json
               subPath: config.json
           env:
             - name: CONFIG_FILE
