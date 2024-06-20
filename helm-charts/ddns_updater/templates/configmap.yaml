@@ -17,7 +17,6 @@ data:
           "token": "{{ $record.key }}",
           "ip_version": "{{ $record.ip_version }}",
           "ipv6_suffix": "",
-          "email": "{{ $record.email }}",
           "proxied": {{ $record.proxied }}
         }{{ if not (eq (add $index 1) (len $.Values.config.records)) }},{{ end }}
         {{- end }}
