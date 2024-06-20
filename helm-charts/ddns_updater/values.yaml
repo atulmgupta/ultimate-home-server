@@ -27,3 +27,21 @@ config:
       ttl: 300
       ip_version: ipv4
       proxied: false
+
+persistentVolume:
+  reclaimPolicy: Retain
+  hostPath: /dozer/docker/ddns_updater
+  storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+
+settings:
+  provider: "cloudflare"
+  domain: "example.com"
+  zone_identifier: "Some Id"
+  host: "@"
+  key: "<Your-Cloudflare-API-Key>"
+  email: "<Your-Cloudflare-Email>"
+  ttl: 300
+  ip_version: ipv4
+  proxied: false

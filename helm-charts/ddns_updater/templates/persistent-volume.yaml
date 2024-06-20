@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: ddns-updater-pv
+  labels:
+    app: {{ include "ddns_updater.name" . }}
+spec:
+  capacity:
+    storage: {{ .Values.persistentVolume.storage }}
+  accessModes:
+    {{- toYaml .Values.persistentVolume.accessModes | nindent 4 }}
+  persistentVolumeReclaimPolicy: {{ .Values.persistentVolume.reclaimPolicy }}
+  hostPath:
+    path: {{ .Values.persistentVolume.hostPath }}

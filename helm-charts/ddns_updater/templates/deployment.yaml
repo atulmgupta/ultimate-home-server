@@ -20,6 +20,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
             - name: config-volume
+              mountPath: /updater/data/config.json
+              subPath: config.json
+            - name: data-volume
               mountPath: /updater/data
           env:
             - name: CONFIG_FILE
@@ -28,3 +31,6 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "ddns_updater.fullname" . }}
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: ddns-updater-pvc
