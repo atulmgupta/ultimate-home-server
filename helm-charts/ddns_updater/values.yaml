@@ -36,14 +36,3 @@ persistentVolume:
     - ReadWriteOnce
 data:
   hostPath: /dozer/docker/ddns_updater
-
-settings:
-  provider: "cloudflare"
-  domain: "example.com"
-  zone_identifier: "Some Id"
-  host: "@"
-  key: "<Your-Cloudflare-API-Key>"
-  email: "<Your-Cloudflare-Email>"
-  ttl: 300
-  ip_version: ipv4
-  proxied: false
