@@ -1,0 +1,19 @@
+---
+- name: Deploy to think-mini
+  hosts: k3s_manager
+  pre_tasks:
+  roles:
+    # - role: ddns_updater
+
+- name: Deploy to think-mini
+  hosts: k3s_workers
+  pre_tasks:
+  roles:
+    # - role: ddns_updater
+
+
+- name: Deploy
+  hosts: k3s_manager, k3s_workers
+  pre_tasks:
+  roles:
+    - role: ddns_updater
