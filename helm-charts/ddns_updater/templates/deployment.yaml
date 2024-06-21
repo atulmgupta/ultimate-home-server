@@ -33,4 +33,4 @@ spec:
             name: {{ include "ddns_updater.fullname" . }}
         - name: data-volume
           persistentVolumeClaim:
-            claimName: ddns-updater-pvc-{{ .Release.Name }}
+            claimName: ddns-updater-pvc-{{ include "ddns_updater.uniqueSuffix" . }}
