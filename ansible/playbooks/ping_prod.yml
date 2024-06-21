@@ -1,6 +1,8 @@
 ---
-- name: Ping all production hosts
-  hosts: all
+- name: Ping hosts
+  hosts: managers, workers
+  vars_files:
+    - ../inventory/prod/sample-secrets.yml
   gather_facts: false
   tasks:
     - name: Ping host

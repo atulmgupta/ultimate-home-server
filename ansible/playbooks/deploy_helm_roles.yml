@@ -11,9 +11,10 @@
   roles:
     # - role: ddns_updater
 
-
 - name: Deploy
   hosts: k3s_manager, k3s_workers
+  vars_files:
+    - ../inventory/prod/sample-secrets.yml
   pre_tasks:
   roles:
-    - role: ddns_updater
+    - role: ../roles/ddns_updater

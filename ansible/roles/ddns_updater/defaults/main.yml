@@ -1,0 +1,54 @@
+---
+# defaults file for roles/ddns_updater
+
+# infrastructure
+ddns_updater_data_directory: "{{ docker_home }}/ddns_updater"
+ddns_updater_namespace: "ddns-updater"
+ddns_updater_release: "ddns-updater"
+ddns_updater_chart: "https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-1.13.0/ddns-updater-1.13.0.tgz"
+ddns_updater_helm:
+  replicaCount: 1
+
+  image:
+    repository: qmcgaw/ddns-updater
+    pullPolicy: IfNotPresent
+    tag: v2.6.0
+
+  service:
+    type: ClusterIP
+    port: 80
+
+  config:
+    log_level: info
+    update_period: 10m
+    delay_start: 0s
+    public_ip_fetchers:
+      - all
+    public_ip_http_providers:
+      - all
+    records:
+      - provider: "cloudflare"
+        domain: "cyphers.app"
+        zone_identifier: "{{ ddns-updater.zone_identifier }}"
+        host: "@"
+        key: "{{ ddns-updater.key }}"
+        email: "{{ ddns-updater.email }}"
+        ttl: 300
+        ip_version: ipv4
+        proxied: false
+  persistentVolume:
+    reclaimPolicy: Retain
+    hostPath: "{{ ddns_updater_data_directory }}"
+    storage: 1Gi
+    accessModes:
+      - ReadWriteOnce
+  settings:
+    provider: "cloudflare"
+    domain: "cyphers.app"
+    zone_identifier: "{{ ddns-updater.zone_identifier }}"
+    host: "@"
+    key: "{{ ddns-updater.key }}"
+    email: "{{ ddns-updater.email }}"
+    ttl: 300
+    ip_version: ipv4
+    proxied: false
