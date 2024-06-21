@@ -1,0 +1,61 @@
+---
+# tasks file for roles/ddns_updater
+- name: Create the data directory on workers
+  ansible.builtin.file:
+    path: "{{ ddns_updater_data_directory }}"
+    state: directory
+    mode: '0755'
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['k3s_workers'] }}"
+
+- name: Render ddns-updater config.json on workers
+  ansible.builtin.template:
+    src: config.json.j2
+    dest: "{{ ddns_updater_data_directory }}/config.json"
+    mode: '0644'
+  delegate_to: "{{ item }}"
+  with_items: "{{ groups['k3s_workers'] }}"
+
+- name: Depoy Helm chart
+  kubernetes.core.helm:
+    name: "{{ ddns_updater_release }}"
+    chart_ref: "{{ ddns_updater_chart }}"
+    release_namespace: "{{ ddns_updater_namespace }}"
+    create_namespace: true
+    force: true
+    wait: true
+    replace: true
+    update_repo_cache: true
+    values:
+      replicaCount: "{{ ddns_updater_helm.replicaCount }}"
+      image:
+        repository: "{{ ddns_updater_helm.image.repository }}"
+        pullPolicy: "{{ ddns_updater_helm.image.pullPolicy }}"
+        tag: "{{ ddns_updater_helm.image.tag }}"
+      service:
+        type: "{{ ddns_updater_helm.service.type }}"
+        port: "{{ ddns_updater_helm.service.port }}"
+      config:
+        log_level: "{{ ddns_updater_helm.config.log_level }}"
+        update_period: "{{ ddns_updater_helm.config.update_period }}"
+        delay_start: "{{ ddns_updater_helm.config.delay_start }}"
+        public_ip_fetchers: "{{ ddns_updater_helm.config.public_ip_fetchers }}"
+        public_ip_http_providers: "{{ ddns_updater_helm.config.public_ip_http_providers }}"
+        records: "{{ ddns_updater_helm.config.records }}"
+      persistentVolume:
+        reclaimPolicy: "{{ ddns_updater_helm.persistentVolume.reclaimPolicy }}"
+        hostPath: "{{ ddns_updater_helm.persistentVolume.hostPath }}"
+        storage: "{{ ddns_updater_helm.persistentVolume.storage }}"
+        accessModes: "{{ ddns_updater_helm.persistentVolume.accessModes }}"
+      settings:
+        provider: "{{ ddns_updater_helm.settings.provider }}"
+        domain: "{{ ddns_updater_helm.settings.domain }}"
+        zone_identifier: "{{ ddns_updater_helm.settings.zone_identifier }}"
+        host: "{{ ddns_updater_helm.settings.host }}"
+        key: "{{ ddns_updater_helm.settings.key }}"
+        email: "{{ ddns_updater_helm.settings.email }}"
+        ttl: "{{ ddns_updater_helm.settings.ttl }}"
+        ip_version: "{{ ddns_updater_helm.settings.ip_version }}"
+        proxied: "{{ ddns_updater_helm.settings.proxied }}"
+    kubeconfig: "{{ ansible_kubeconfig }}"
+  delegate_to: "{{ groups['k3s_manager'][0] }}"
