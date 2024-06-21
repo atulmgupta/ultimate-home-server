@@ -1,0 +1,9 @@
+# inventory.yml
+all:
+  children:
+    managers:
+      hosts:
+        manager1:
+    workers:
+      hosts:
+        worker1:

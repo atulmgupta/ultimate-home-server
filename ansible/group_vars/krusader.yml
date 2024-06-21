@@ -1,0 +1,10 @@
+---
+krusader_available_externally: true
+krusader_config_directory: "{{ docker_home }}/krusader/config"
+krusader_browse_directory: "/"
+krusader_user_id: "{{ ansible_nas.krusader.user_id }}"
+krusader_group_id: "{{ ansible_nas.krusader.group_id }}"
+krusader_secure_connection: "0"
+krusader_vnc_password: "{{ ansible_nas.krusader.vnc_password }}"
+krusader_port_http: "5800"
+krusader_port_vnc: "5900"

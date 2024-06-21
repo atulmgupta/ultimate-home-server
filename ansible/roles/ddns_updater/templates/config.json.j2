@@ -1,0 +1,15 @@
+{
+  "settings": [
+    {
+      "provider": "{{ ddns_updater_helm.settings.provider }}",
+      "zone_identifier": "{{ ddns_updater_helm.settings.zone_identifier }}",
+      "domain": "{{ ddns_updater_helm.settings.domain }}",
+      "host": "{{ ddns_updater_helm.settings.host }}",
+      "ttl": {{ ddns_updater_helm.settings.ttl }},
+      "key": "{{ ddns_updater_helm.settings.key }}",
+      "email": "{{ ddns_updater_helm.settings.email }}",
+      "ip_version": "{{ ddns_updater_helm.settings.ip_version }}",
+      "proxied": {{ ddns_updater_helm.settings.proxied | lower }}
+    }
+  ]
+}

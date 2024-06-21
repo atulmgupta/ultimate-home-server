@@ -1,0 +1,49 @@
+replicaCount: 1
+uniqueSuffix: abcd
+image:
+  repository: qmcgaw/ddns-updater
+  pullPolicy: IfNotPresent
+  tag: v2.6.0
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  log_level: info
+  update_period: 10m
+  delay_start: 0s
+  public_ip_fetchers:
+    - all
+  public_ip_http_providers:
+    - all
+  records:
+    - provider: "cloudflare"
+      domain: "example.com"
+      zone_identifier: "Some Id"
+      host: "@"
+      key: "<Your-Cloudflare-API-Key>"
+      email: "<Your-Cloudflare-Email>"
+      ttl: 300
+      ip_version: ipv4
+      proxied: false
+
+persistentVolume:
+  reclaimPolicy: Retain
+  hostPath: /ddns_updater
+  storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+data:
+  hostPath: /dozer/docker/ddns_updater
+
+settings:
+  provider: "cloudflare"
+  domain: "example.com"
+  zone_identifier: "Some Id"
+  host: "@"
+  key: "<Your-Cloudflare-API-Key>"
+  email: "<Your-Cloudflare-Email>"
+  ttl: 300
+  ip_version: ipv4
+  proxied: false
