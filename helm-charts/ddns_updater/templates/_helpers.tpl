@@ -7,5 +7,9 @@
 {{- end -}}
 
 {{- define "ddns_updater.uniqueSuffix" -}}
+{{- if .Values.uniqueSuffix -}}
+{{ .Values.uniqueSuffix }}
+{{- else -}}
 {{- randAlphaNum 8 | lower -}}
+{{- end -}}
 {{- end -}}

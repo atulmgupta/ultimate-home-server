@@ -1,5 +1,5 @@
 replicaCount: 1
-
+uniqueSuffix: {{ randAlphaNum 8 | lower }}
 image:
   repository: qmcgaw/ddns-updater
   pullPolicy: IfNotPresent
