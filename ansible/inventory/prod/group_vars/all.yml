@@ -9,13 +9,8 @@ default_container_command: "{{ ansible_nas.default_container_command }}"
 ansible_nas_timezone: "{{ ansible_nas.timezone }}"
 docker_home: "{{ ansible_nas.docker_home }}"
 
-ansible_user: "{{ all.vars.ansible_nas_user }}"
-ansible_ssh_private_key_file: "{{ all.vars.ansible_nas_ssh_key }}"
+ansible_user: "{{ all.vars.ansible_user }}"
+ansible_ssh_private_key_file: "{{ all.vars.ansible_ssh_private_key_file }}"
 ansible_become: "{{ all.vars.ansible_become }}"
 ansible_become_method: "{{ all.vars.ansible_become_method }}"
 
-manager:
-  host1: 192.168.68.103
-
-workers:
-  host1: 192.168.68.78
