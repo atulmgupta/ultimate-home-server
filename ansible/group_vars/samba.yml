@@ -1,5 +1,5 @@
 ---
-samba_shares_root: /dozer
+samba_shares_root: "{{ ansible_nas.samba.root }}"
 downloads_root: "{{ samba_shares_root }}/downloads"
 movies_root: "{{ samba_shares_root }}/movies"
 tv_root: "{{ samba_shares_root }}/tv"
@@ -102,6 +102,6 @@ nfs_exports:
   - "{{ nfs_shares_root }}/public *(rw,sync,no_root_squash)"
 samba_mitigate_cve_2017_7494: false
 samba_apple_extensions: yes
-samba_guest_account: ansible-nas
+samba_guest_account: "{{ ansible_nas.samaba.guest_account }}"
 samba_map_to_guest: Bad Password
 samba_netbios_name: "{{ ansible_nas_hostname }}"

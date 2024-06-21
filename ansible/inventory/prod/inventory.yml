@@ -1,0 +1,9 @@
+# inventory.yml
+all:
+  children:
+    k3s_manager:
+      hosts:
+        manager1:
+    k3s_workers:
+      hosts:
+        worker1:

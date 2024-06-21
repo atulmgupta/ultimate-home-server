@@ -1,4 +1,4 @@
 ---
-influxdb_username: <<username>>
-influxdb_database_name: homelab
-influxdb_password: <<password>>
+influxdb_username: "{{ ansible_nas.influxdb.username }}"
+influxdb_database_name: "{{ ansible_nas.influxdb.database_name }}"
+influxdb_password: "{{ ansible_nas.influxdb.password }}"

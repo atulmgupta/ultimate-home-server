@@ -1,10 +1,21 @@
 ---
-ansible_python_interpreter: /usr/bin/python3
-ansible_nas_user_group: ansible-lab
-ansible_nas_email: iamatulmgupta@gmail.com
+ansible_python_interpreter: "{{ ansible_nas.python_interpreter }}"
+ansible_nas_user_group: "{{ ansible_nas.user_group }}"
+ansible_nas_email: "{{ ansible_nas.email }}"
 container_count: 4
-default_container_name: docker
-default_container_image: ubuntu
-default_container_command: sleep 1d
-ansible_nas_timezone: Etc/UTC
-docker_home: /dozer/docker
+default_container_name: "{{ ansible_nas.default_container_name }}"
+default_container_image: "{{ ansible_nas.default_container_image }}"
+default_container_command: "{{ ansible_nas.default_container_command }}"
+ansible_nas_timezone: "{{ ansible_nas.timezone }}"
+docker_home: "{{ ansible_nas.docker_home }}"
+
+ansible_user: "{{ all.vars.ansible_nas_user }}"
+ansible_ssh_private_key_file: "{{ all.vars.ansible_nas_ssh_key }}"
+ansible_become: "{{ all.vars.ansible_become }}"
+ansible_become_method: "{{ all.vars.ansible_become_method }}"
+
+manager:
+  host1: 192.168.68.103
+
+workers:
+  host1: 192.168.68.78
