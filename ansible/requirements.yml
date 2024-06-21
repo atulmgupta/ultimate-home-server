@@ -1,20 +1,35 @@
 ---
 roles:
   - name: geerlingguy.docker
-    version: 3.0.0
+    version: 3.0.0  # Role for managing Docker installation and configuration
 
   - name: bertvv.samba
-    version: v2.7.1
+    version: v2.7.1  # Role for setting up Samba file sharing
 
   - name: geerlingguy.nfs
-    version: 2.0.0
+    version: 2.0.0  # Role for setting up NFS file sharing
 
-  - name: ansible-role-k3s
-    src: git+https://github.com/PyratLabs/ansible-role-k3s.git
-    version: v1.2.0
+  - name: geerlingguy.helm
+    version: 1.0.1  # Role for managing Helm installation and configuration, useful for Kubernetes
+
+  - name: cloud.terraform
+    version: 2.0.0  # Role for managing Terraform installation and configuration
 
 collections:
   - name: community.general
-    version: 3.4.0
+    version: 3.4.0  # Collection with a variety of useful modules and plugins
+
   - name: ansible.posix
-    version: 1.2.0
+    version: 1.2.0  # Collection for POSIX-specific modules and plugins
+
+  - name: community.docker
+    version: 1.9.0  # Collection for Docker-specific modules and plugins
+
+  - name: ansible.netcommon
+    version: 2.5.0  # Collection for common networking tasks
+
+  - name: cloud.terraform
+    version: 2.0.0
+
+  - name: kubernetes.core
+    version: 5.0.0
