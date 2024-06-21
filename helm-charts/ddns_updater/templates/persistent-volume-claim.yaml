@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: ddns-updater-pvc-{{ .Release.Name }}
+  name: ddns-updater-pvc-{{ include "ddns_updater.uniqueSuffix" . }}
   labels:
     app: {{ include "ddns_updater.name" . }}
 spec:
