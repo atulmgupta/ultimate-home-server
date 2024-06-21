@@ -30,10 +30,12 @@ config:
 
 persistentVolume:
   reclaimPolicy: Retain
-  hostPath: /dozer/docker/ddns_updater
+  hostPath: /ddns_updater
   storage: 1Gi
   accessModes:
     - ReadWriteOnce
+data:
+  hostPath: /dozer/docker/ddns_updater
 
 settings:
   provider: "cloudflare"

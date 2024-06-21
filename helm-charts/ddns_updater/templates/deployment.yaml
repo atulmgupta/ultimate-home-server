@@ -19,18 +19,22 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           volumeMounts:
-            - name: config-volume
-              mountPath: /updater/data/config.json
-              subPath: config.json
+            # - name: config-volume
+            #   mountPath: /updater/data/config.json
+            #   subPath: config.json
             - name: data-volume
               mountPath: /updater/data
           env:
             - name: CONFIG_FILE
               value: /updater/data/config.json
       volumes:
-        - name: config-volume
-          configMap:
-            name: {{ include "ddns_updater.fullname" . }}
+        # - name: config-volume
+        #   configMap:
+        #     name: {{ include "ddns_updater.fullname" . }}
         - name: data-volume
           persistentVolumeClaim:
             claimName: ddns-updater-pvc-{{ include "ddns_updater.uniqueSuffix" . }}
+        - name: data-volume
+          hostPath:
+            path: "{{ .Values.data.hostPath }}"
+            type: DirectoryOrCreate
