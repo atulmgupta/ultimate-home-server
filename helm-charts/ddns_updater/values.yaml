@@ -1,4 +1,5 @@
 replicaCount: 1
+uniqueSuffix: {{ uuidv4 | lower }}
 
 image:
   repository: qmcgaw/ddns-updater
