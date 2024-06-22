@@ -1,5 +1,5 @@
 replicaCount: 1
-uniqueSuffix: abcd
+uniqueSuffix: helm-ddns-updater
 image:
   repository: qmcgaw/ddns-updater
   pullPolicy: IfNotPresent
