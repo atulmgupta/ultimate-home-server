@@ -17,16 +17,16 @@ roles:
 
 collections:
   - name: community.general
-    version: 3.4.0  # Collection with a variety of useful modules and plugins
+    version: 9.1.0  # Collection with a variety of useful modules and plugins
 
   - name: ansible.posix
-    version: 1.2.0  # Collection for POSIX-specific modules and plugins
+    version: 1.5.4  # Collection for POSIX-specific modules and plugins
 
   - name: community.docker
-    version: 1.9.0  # Collection for Docker-specific modules and plugins
+    version: 3.10.4  # Collection for Docker-specific modules and plugins
 
   - name: ansible.netcommon
-    version: 2.5.0  # Collection for common networking tasks
+    version: 7.0.0  # Collection for common networking tasks
 
   - name: cloud.terraform
     version: 2.0.0
