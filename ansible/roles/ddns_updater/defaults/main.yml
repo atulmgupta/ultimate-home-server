@@ -5,7 +5,7 @@
 ddns_updater_data_directory: "{{ docker_home }}/ddns_updater"
 ddns_updater_namespace: "ddns-updater"
 ddns_updater_release: "ddns-updater"
-ddns_updater_chart: "https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-1.19.0/ddns-updater-1.19.0.tgz"
+ddns_updater_chart: "{{ helm.ddns_updater_chart }}"
 
 ddns_updater_helm:
   replicaCount: 1
