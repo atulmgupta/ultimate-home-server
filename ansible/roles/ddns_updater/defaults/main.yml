@@ -5,10 +5,11 @@
 ddns_updater_data_directory: "{{ docker_home }}/ddns_updater"
 ddns_updater_namespace: "ddns-updater"
 ddns_updater_release: "ddns-updater"
-ddns_updater_chart: "https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-1.13.0/ddns-updater-1.13.0.tgz"
+ddns_updater_chart: "https://github.com/atulmgupta/ultimate-home-server/releases/download/ddns-updater-1.19.0/ddns-updater-1.19.0.tgz"
+
 ddns_updater_helm:
   replicaCount: 1
-
+  uniqueSuffix: "{{ ddns_updater_release }}"
   image:
     repository: qmcgaw/ddns-updater
     pullPolicy: IfNotPresent
@@ -29,26 +30,17 @@ ddns_updater_helm:
     records:
       - provider: "cloudflare"
         domain: "cyphers.app"
-        zone_identifier: "{{ ddns-updater.zone_identifier }}"
+        zone_identifier: "{{ ddns_updater.zone_identifier }}"
         host: "@"
-        key: "{{ ddns-updater.key }}"
-        email: "{{ ddns-updater.email }}"
+        key: "{{ ddns_updater.key }}"
+        email: "{{ ddns_updater.email }}"
         ttl: 300
         ip_version: ipv4
-        proxied: false
+        proxied: true
+
   persistentVolume:
     reclaimPolicy: Retain
     hostPath: "{{ ddns_updater_data_directory }}"
     storage: 1Gi
     accessModes:
       - ReadWriteOnce
-  settings:
-    provider: "cloudflare"
-    domain: "cyphers.app"
-    zone_identifier: "{{ ddns-updater.zone_identifier }}"
-    host: "@"
-    key: "{{ ddns-updater.key }}"
-    email: "{{ ddns-updater.email }}"
-    ttl: 300
-    ip_version: ipv4
-    proxied: false

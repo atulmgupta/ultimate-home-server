@@ -1,33 +1,54 @@
 ---
 # tasks file for roles/ddns_updater
+
+- name: Generate a UUID
+  ansible.builtin.command: uuidgen
+  register: uuid_result
+  delegate_to: "{{ groups['managers'][0] }}"
+  run_once: true
+
+- name: Set the unique short prefix
+  ansible.builtin.set_fact:
+    ddns_updater_release: "{{ uuid_result.stdout[:5] }}"
+  delegate_to: "{{ groups['managers'][0] }}"
+  run_once: true
+
+- name: Display the unique short prefix
+  ansible.builtin.debug:
+    msg: "The unique short prefix is: {{ ddns_updater_release }}"
+  delegate_to: "{{ groups['managers'][0] }}"
+  run_once: true
+
 - name: Create the data directory on workers
   ansible.builtin.file:
     path: "{{ ddns_updater_data_directory }}"
     state: directory
     mode: '0755'
   delegate_to: "{{ item }}"
-  with_items: "{{ groups['k3s_workers'] }}"
-
-- name: Render ddns-updater config.json on workers
-  ansible.builtin.template:
-    src: config.json.j2
-    dest: "{{ ddns_updater_data_directory }}/config.json"
-    mode: '0644'
-  delegate_to: "{{ item }}"
-  with_items: "{{ groups['k3s_workers'] }}"
+  with_items: "{{ groups['workers'] }}"
+  run_once: true
+# - name: Render ddns-updater config.json on workers
+#   ansible.builtin.template:
+#     src: config.json.j2
+#     dest: "{{ ddns_updater_data_directory }}/config.json"
+#     mode: '0644'
+#   delegate_to: "{{ item }}"
+#   with_items: "{{ groups['k3s_workers'] }}"
 
 - name: Depoy Helm chart
   kubernetes.core.helm:
     name: "{{ ddns_updater_release }}"
     chart_ref: "{{ ddns_updater_chart }}"
     release_namespace: "{{ ddns_updater_namespace }}"
-    create_namespace: true
-    force: true
-    wait: true
-    replace: true
-    update_repo_cache: true
+    # create_namespace: true
+    # force: true
+    # wait: true
+    # replace: true
+    reuse_values: true
+    # update_repo_cache: true
     values:
       replicaCount: "{{ ddns_updater_helm.replicaCount }}"
+      uniqueSuffix: "{{ ddns_updater_release }}"
       image:
         repository: "{{ ddns_updater_helm.image.repository }}"
         pullPolicy: "{{ ddns_updater_helm.image.pullPolicy }}"
@@ -47,15 +68,6 @@
         hostPath: "{{ ddns_updater_helm.persistentVolume.hostPath }}"
         storage: "{{ ddns_updater_helm.persistentVolume.storage }}"
         accessModes: "{{ ddns_updater_helm.persistentVolume.accessModes }}"
-      settings:
-        provider: "{{ ddns_updater_helm.settings.provider }}"
-        domain: "{{ ddns_updater_helm.settings.domain }}"
-        zone_identifier: "{{ ddns_updater_helm.settings.zone_identifier }}"
-        host: "{{ ddns_updater_helm.settings.host }}"
-        key: "{{ ddns_updater_helm.settings.key }}"
-        email: "{{ ddns_updater_helm.settings.email }}"
-        ttl: "{{ ddns_updater_helm.settings.ttl }}"
-        ip_version: "{{ ddns_updater_helm.settings.ip_version }}"
-        proxied: "{{ ddns_updater_helm.settings.proxied }}"
-    kubeconfig: "{{ ansible_kubeconfig }}"
-  delegate_to: "{{ groups['k3s_manager'][0] }}"
+    kubeconfig: "{{ ansible_nas.kubeconfig }}"
+  delegate_to: manager1
+  run_once: true
