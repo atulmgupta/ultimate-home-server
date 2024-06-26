@@ -11,6 +11,16 @@ entries:
     urls:
     - https://github.com/atulmgupta/ultimate-home-server/releases/download/authelia-0.1.0/authelia-0.1.0.tgz
     version: 0.1.0
+  caddy:
+  - apiVersion: v2
+    appVersion: 2.5.1
+    created: "2024-06-26T01:39:29.693703973Z"
+    description: A Helm chart for Caddy
+    digest: be00a56fd17842b22e4c277af66ce6b16cef60a377eab130c6bb2798dba1235c
+    name: caddy
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server/releases/download/caddy-0.1.0/caddy-0.1.0.tgz
+    version: 0.1.0
   ddns-updater:
   - apiVersion: v2
     appVersion: 2.7.1
@@ -325,4 +335,4 @@ entries:
     urls:
     - https://github.com/atulmgupta/ultimate-home-server/releases/download/traefik-0.1.0/traefik-0.1.0.tgz
     version: 0.1.0
-generated: "2024-06-22T04:08:56.21574478Z"
+generated: "2024-06-26T01:39:29.793790159Z"
