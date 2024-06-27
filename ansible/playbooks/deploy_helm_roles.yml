@@ -17,4 +17,5 @@
     - ../inventory/prod/sample-secrets.yml
   pre_tasks:
   roles:
-    - role: ../roles/ddns_updater
+    # - role: ../roles/ddns_updater
+    - role: ../roles/caddy
