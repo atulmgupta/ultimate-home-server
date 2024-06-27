@@ -1,0 +1,52 @@
+---
+# tasks file for roles/caddy
+
+- name: Create directory for custom values files
+  ansible.builtin.file:
+    path: "{{ caddy_custom_values_files_dir }}"
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+
+- name: Find value files in template directory
+  ansible.builtin.find:
+    paths: "{{ role_path }}/templates"
+    patterns: "*.yaml.j2"
+  register: value_files
+  delegate_to: localhost
+
+- name: Render custom values files locally
+  ansible.builtin.template:
+    src: "{{ item.path }}"
+    dest: "{{ caddy_custom_values_files_dir }}/{{ item.path | basename | regex_replace('\\.j2$', '') }}"
+    mode: '0644'
+  with_items: "{{ value_files.files }}"
+  delegate_to: localhost
+
+- name: Collect rendered custom values files
+  ansible.builtin.find:
+    paths: "{{ caddy_custom_values_files_dir }}"
+    patterns: "*.yaml"
+  register: rendered_value_files
+
+- name: Install or upgrade the Caddy Helm chart
+  kubernetes.core.helm:
+    name: "{{ caddy_chart_release_name }}"
+    chart_ref: "{{ caddy_chart_ref }}"
+    release_namespace: "{{ caddy_chart_release_namespace }}"
+    create_namespace: true
+    reuse_values: true
+    kubeconfig: "{{ ansible_nas.kubeconfig }}"
+    values_files: "{{ rendered_value_files.files | map(attribute='path') | list }}"
+  delegate_to: manager1
+  run_once: true
+
+- name: Remove temporary custom values files
+  ansible.builtin.file:
+    path: "{{ caddy_custom_values_files_dir }}"
+    state: absent
+  delegate_to: localhost
+  failed_when: false
+  when: rendered_value_files is defined
+  tags:
+    - always
