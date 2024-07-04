@@ -1,5 +1,0 @@
----
-joomla_data_directory: "{{ docker_home }}/joomla"
-joomla_available_externally: true
-joomla_database_password: "{{ lookup('env', 'JOOMLA_DATABASE_PASSWORD') }}"
-joomla_port: "8189"

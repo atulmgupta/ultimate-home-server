@@ -1,4 +1,0 @@
----
-influxdb_username: "{{ lookup('env', 'INFLUXDB_USERNAME') | default('admin', true) }}"
-influxdb_database_name: "{{ ansible_nas.influxdb.database_name }}"
-influxdb_password: "{{ lookup('env', 'INFLUXDB_PASSWORD') | default('admin', true) }}"

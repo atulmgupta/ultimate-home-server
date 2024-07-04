@@ -1,9 +1,0 @@
----
-vd_data_directory: "{{ docker_home }}/virtual_desktop"
-vd_docker_image: "{{ ansible_nas.virtual_desktop.docker_image }}"
-vd_users:
-  - username: "{{ ansible_nas.user }}"
-    password: "{{ lookup('env', 'VIRTUALDESKTOP_PASSWORD') }}"
-    sudo: "Y"
-vd_rdp_port: 3389
-
