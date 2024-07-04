@@ -1,8 +1,0 @@
----
-# defaults file for roles/caddy
-caddy_data_directory: "{{ docker_home }}/caddy"
-
-caddy_custom_values_files_dir: "/tmp/helm_values"
-caddy_chart_ref: "{{ helm.caddy_chart }}"
-caddy_chart_release_name: "caddy"
-caddy_chart_release_namespace: "caddy"

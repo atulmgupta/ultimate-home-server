@@ -1,1 +1,0 @@
-ansible_host: "{{ all.vars.workers.hosts.0 }}"

@@ -1,5 +1,0 @@
----
-thelounge_available_externally: true
-thelounge_data_directory: "{{ docker_home }}/thelounge"
-thelounge_port_one: "113"
-thelounge_port_two: "9002"
