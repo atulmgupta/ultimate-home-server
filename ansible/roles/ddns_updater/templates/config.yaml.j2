@@ -1,0 +1,17 @@
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  records:
+  {% for record in ddns_updater_values.records %}
+    - provider: "{{ record.provider }}"
+      domain: "{{ record.domain }}"
+      zone_identifier: "{{ record.zone_identifier }}"
+      host: "{{ record.host }}"
+      key: "{{ record.key }}"
+      email: "{{ record.email }}"
+      ttl: {{ record.ttl }}
+      ip_version: {{ record.ip_version }}
+      proxied: {{ record.proxied | lower }}
+  {% endfor %}

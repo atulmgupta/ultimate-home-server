@@ -11,11 +11,61 @@
   roles:
     # - role: ddns_updater
 
+- name: Load environment variables from .env file
+  hosts: localhost
+  vars_files:
+    - ../inventory/prod/ansible.yml
+  gather_facts: false
+  tasks:
+    - name: Read .env file content
+      ansible.builtin.command: cat ../.env
+      register: env_file_content
+      changed_when: false
+
+    - name: Parse environment variables into a list
+      ansible.builtin.set_fact:
+        env_lines: "{{ env_file_content.stdout.splitlines() }}"
+
+    - name: Filter and clean environment variable lines
+      ansible.builtin.set_fact:
+        env_clean_lines: "{{ env_lines | select('search', '=') | reject('search', '^#') | map('trim') }}"
+
+    - name: Initialize environment variables dictionary
+      ansible.builtin.set_fact:
+        env_vars: {}
+
+    - name: Populate environment variables dictionary
+      ansible.builtin.set_fact:
+        env_vars: "{{ env_vars | combine({item.split('=')[0]: item.split('=')[1]}) }}"
+      with_items: "{{ env_clean_lines }}"
+
+    - name: Debug environment variables
+      ansible.builtin.debug:
+        var: env_vars
+
 - name: Deploy
   hosts: managers, workers
+  vars:
+    ddns_updater_delegate_to: "worker1"
+    caddy_deletage_to: "worker1"
+    traefik_deletage_to: "worker1"
   vars_files:
-    - ../inventory/prod/sample-secrets.yml
+    - ../inventory/prod/ansible.yml
   pre_tasks:
+    - name: Print DDNS Updater Helm Chart URL
+      ansible.builtin.debug:
+        msg: "DDNS Updater Helm Chart: {{ helm.chart.ddns_updater }}"
+
+    - name: Print Caddy Helm Chart URL
+      ansible.builtin.debug:
+        msg: "Caddy Helm Chart: {{ helm.chart.caddy }}"
+
+    - name: Print Traefik Helm Chart URL
+      ansible.builtin.debug:
+        msg: "Traefik Helm Chart: {{ helm.chart.traefik }}"
+
   roles:
-    # - role: ../roles/ddns_updater
-    - role: ../roles/caddy
+    - role: ../roles/ddns_updater
+    # - role: ../roles/caddy
+    # - role: ../roles/traefik
+    #   tarefik_delegate_to: "{{ traefik_deletage_to }}"

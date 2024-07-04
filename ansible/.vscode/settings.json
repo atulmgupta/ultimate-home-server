@@ -1,13 +1,16 @@
 {
   "ansible.python.interpreterPath": "/bin/python3",
   "cSpell.words": [
-    "atulmgupta",
+    "bertvv",
     "ddns",
+    "geerlingguy",
     "groupid",
     "homelab",
     "joomla",
     "krusader",
     "kubeconfig",
+    "netcommon",
+    "posix",
     "svnc",
     "timemachine",
     "traefik",

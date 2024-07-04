@@ -9,34 +9,41 @@
   with_items: "{{ groups['workers'] }}"
   run_once: true
 
+- name: Create directory for custom values files
+  ansible.builtin.file:
+    path: "{{ ddns_updater_template_directory }}"
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+
+- name: Find value files in template directory
+  ansible.builtin.find:
+    paths: "{{ role_path }}/templates"
+    patterns: "*.yaml.j2"
+  register: value_files
+  delegate_to: localhost
+
+- name: Render custom values files locally
+  ansible.builtin.template:
+    src: "{{ item.path }}"
+    dest: "{{ ddns_updater_template_directory }}/{{ item.path | basename | regex_replace('\\.j2$', '') }}"
+    mode: '0644'
+  with_items: "{{ value_files.files }}"
+  delegate_to: localhost
+
+- name: Collect rendered custom values files
+  ansible.builtin.find:
+    paths: "{{ ddns_updater_template_directory }}"
+    patterns: "*.yaml"
+  register: rendered_value_files
+
 - name: Depoy Helm chart
   kubernetes.core.helm:
-    name: "{{ ddns_updater_release }}"
-    chart_ref: "{{ ddns_updater_chart }}"
-    release_namespace: "{{ ddns_updater_namespace }}"
+    name: "{{ ddns_updater_helm.release }}"
+    chart_ref: "{{ ddns_updater_helm.chart }}"
+    release_namespace: "{{ ddns_updater_chart.namespace }}"
     reuse_values: true
-    values:
-      replicaCount: "{{ ddns_updater_helm.replicaCount }}"
-      uniqueSuffix: "{{ ddns_updater_release }}"
-      image:
-        repository: "{{ ddns_updater_helm.image.repository }}"
-        pullPolicy: "{{ ddns_updater_helm.image.pullPolicy }}"
-        tag: "{{ ddns_updater_helm.image.tag }}"
-      service:
-        type: "{{ ddns_updater_helm.service.type }}"
-        port: "{{ ddns_updater_helm.service.port }}"
-      config:
-        log_level: "{{ ddns_updater_helm.config.log_level }}"
-        update_period: "{{ ddns_updater_helm.config.update_period }}"
-        delay_start: "{{ ddns_updater_helm.config.delay_start }}"
-        public_ip_fetchers: "{{ ddns_updater_helm.config.public_ip_fetchers }}"
-        public_ip_http_providers: "{{ ddns_updater_helm.config.public_ip_http_providers }}"
-        records: "{{ ddns_updater_helm.config.records }}"
-      persistentVolume:
-        reclaimPolicy: "{{ ddns_updater_helm.persistentVolume.reclaimPolicy }}"
-        hostPath: "{{ ddns_updater_helm.persistentVolume.hostPath }}"
-        storage: "{{ ddns_updater_helm.persistentVolume.storage }}"
-        accessModes: "{{ ddns_updater_helm.persistentVolume.accessModes }}"
+    values_files: "{{ rendered_value_files.files | map(attribute='path') | list }}"
     kubeconfig: "{{ ansible_nas.kubeconfig }}"
   delegate_to: manager1
   run_once: true
