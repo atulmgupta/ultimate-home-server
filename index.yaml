@@ -1,5 +1,26 @@
 apiVersion: v1
 entries:
+  authelia:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-07-04T03:13:15.253384389Z"
+    description: A Helm chart for Authelia
+    digest: 78deb8d9a9b48980ceb3edf6c80cf99254a91d82e463b6521d034129bfd10d2e
+    name: authelia
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/authelia-0.1.0/authelia-0.1.0.tgz
+    version: 0.1.0
+  caddy:
+  - apiVersion: v2
+    appVersion: 2.5.1
+    created: "2024-07-04T03:13:15.45608335Z"
+    description: A Helm chart for Caddy
+    digest: 2e3bf56c3ab6a9a68b0fd84dcbd34b02370b47d3560de54dd98f09f8d142311a
+    name: caddy
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/caddy-0.1.0/caddy-0.1.0.tgz
+    version: 0.1.0
   ddns-updater:
   - apiVersion: v2
     appVersion: 2.7.1
@@ -11,4 +32,37 @@ entries:
     urls:
     - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/ddns-updater-1.21.0/ddns-updater-1.21.0.tgz
     version: 1.21.0
-generated: "2024-07-04T03:10:07.899187423Z"
+  portainer:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-07-04T03:13:15.855355607Z"
+    description: A Helm chart for Kubernetes
+    digest: 6102bf2daa4a0900ed7c78ca30c993a9ba37153b8c4eb7e4dab08093fa2871fc
+    name: portainer
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/portainer-0.1.0/portainer-0.1.0.tgz
+    version: 0.1.0
+  redis:
+  - apiVersion: v2
+    appVersion: latest
+    created: "2024-07-04T03:13:16.148939529Z"
+    description: A Helm chart for Redis
+    digest: dbf3751fdf206b38905d9102c56caec9c6cab5ed2305de0069da317fe13919c9
+    name: redis
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/redis-0.8.0/redis-0.8.0.tgz
+    version: 0.8.0
+  traefik:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-07-04T03:13:16.321332421Z"
+    description: A Helm chart for Kubernetes
+    digest: e8c479727e19d5530e6053c2af3fe7f75273276757ea2e5356ae960ae1e3f121
+    name: traefik
+    type: application
+    urls:
+    - https://github.com/atulmgupta/ultimate-home-server-helm/releases/download/traefik-0.1.0/traefik-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-07-04T03:13:16.32134258Z"
