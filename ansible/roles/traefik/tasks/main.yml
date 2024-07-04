@@ -1,0 +1,75 @@
+---
+# tasks file for roles/traefik
+
+- name: Create traefik dictionary
+  ansible.builtin.file:
+    path: "{{ traefik_custom_values_files_dir }}"
+    state: directory
+    mode: '0755'
+  delegate_to: "{{ tarefik_delegate_to }}"
+
+- name: Create directory for custom values files
+  ansible.builtin.file:
+    path: "{{ traefik_custom_values_files_dir }}"
+    state: directory
+    mode: '0755'
+  delegate_to: localhost
+
+- name: Find value files in template directory
+  ansible.builtin.find:
+    paths: "{{ role_path }}/templates"
+    patterns: "*.yaml.j2"
+  register: value_files
+  delegate_to: localhost
+
+- name: Render custom values files locally
+  ansible.builtin.template:
+    src: "{{ item.path }}"
+    dest: "{{ traefik_custom_values_files_dir }}/{{ item.path | basename | regex_replace('\\.j2$', '') }}"
+    mode: '0644'
+  with_items: "{{ value_files.files }}"
+  delegate_to: localhost
+
+- name: Collect rendered custom values files
+  ansible.builtin.find:
+    paths: "{{ traefik_custom_values_files_dir }}"
+    patterns: "*.yaml"
+  register: rendered_value_files
+
+- name: Check if Traefik repository is already added
+  ansible.builtin.shell: helm repo list | grep -w traefik
+  register: traefik_repo_check
+  ignore_errors: true
+  delegate_to: manager1
+  run_once: true
+  changed_when: false
+
+- name: Add Traefik Helm Chart Repository
+  kubernetes.core.helm_repository:
+    name: traefik
+    repo_url: "{{ traefik_chart_repository }}"
+  delegate_to: manager1
+  run_once: true
+  when: traefik_repo_check.rc != 0
+
+- name: Install or upgrade the Traefik Helm chart
+  kubernetes.core.helm:
+    name: "{{ traefik_chart_release_name }}"
+    chart_ref: "{{ traefik_chart_ref }}"
+    release_namespace: "{{ traefik_chart_release_namespace }}"
+    create_namespace: true
+    reuse_values: true
+    kubeconfig: "{{ ansible_nas.kubeconfig }}"
+    values_files: "{{ rendered_value_files.files | map(attribute='path') | list }}"
+  delegate_to: manager1
+  run_once: true
+
+# - name: Remove temporary custom values files
+#   ansible.builtin.file:
+#     path: "{{ traefik_custom_values_files_dir }}"
+#     state: absent
+#   delegate_to: localhost
+#   failed_when: false
+#   when: rendered_value_files is defined
+#   tags:
+#     - always

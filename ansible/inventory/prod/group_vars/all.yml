@@ -13,4 +13,3 @@ ansible_user: "{{ all.vars.ansible_user }}"
 ansible_ssh_private_key_file: "{{ all.vars.ansible_ssh_private_key_file }}"
 ansible_become: "{{ all.vars.ansible_become }}"
 ansible_become_method: "{{ all.vars.ansible_become_method }}"
-

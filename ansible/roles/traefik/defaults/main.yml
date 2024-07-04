@@ -1,0 +1,12 @@
+---
+# defaults file for roles/traefik
+
+# directory
+traefik_custom_values_files_dir: "{{ docker_home }}/traefik"
+
+# Helm
+traefik_chart: "traefik/traefik"
+traefik_chart_ref: "traefik/traefik"
+traefik_chart_release_name: "traefikv2"
+traefik_chart_release_namespace: "traefikv2"
+traefik_chart_repository: "https://traefik.github.io/charts"

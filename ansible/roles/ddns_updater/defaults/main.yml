@@ -3,11 +3,12 @@
 
 # infrastructure
 ddns_updater_data_directory: "{{ docker_home }}/ddns_updater"
-ddns_updater_namespace: "ddns-updater"
-ddns_updater_release: "ddns-updater"
-ddns_updater_chart: "{{ helm.ddns_updater_chart }}"
+ddns_updater_template_directory: "/tmp/ddns_updater"
 
-ddns_updater_helm:
+ddns_updater_values:
+  chart: "{{ helm.chart.ddns_updater }}"
+  namespace: "ddns-updater"
+  release: "ddns-updater"
   replicaCount: 1
   uniqueSuffix: "{{ ddns_updater_release }}"
   image:
@@ -29,11 +30,11 @@ ddns_updater_helm:
       - all
     records:
       - provider: "cloudflare"
-        domain: "cyphers.app"
-        zone_identifier: "{{ ddns_updater.zone_identifier }}"
+        domain: "{{ lookup('env', 'DDNS_UPDATER_DOMAIN') }}"
+        zone_identifier: "{{ lookup('env', 'DDNS_UPDATER_ZONE_IDENTIFIER') }}"
         host: "@"
-        key: "{{ ddns_updater.key }}"
-        email: "{{ ddns_updater.email }}"
+        key: "{{ lookup('env', 'DDNS_UPDATER_KEY') }}"
+        email: "{{ lookup('env', 'DDNS_UPDATER_EMAIL') }}"
         ttl: 300
         ip_version: ipv4
         proxied: true
