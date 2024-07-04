@@ -26,7 +26,7 @@ jobs:
 
       - name: Lint all Helm charts
         run: |
-          for chart in $(find helm-charts -name Chart.yaml -exec dirname {} \;); do
+          for chart in $(find charts -name Chart.yaml -exec dirname {} \;); do
             echo "Linting chart in $chart"
             helm lint $chart
           done
