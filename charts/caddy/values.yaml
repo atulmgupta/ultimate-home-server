@@ -1,5 +1,4 @@
 replicaCount: 1
-
 image:
   repository: caddy
   tag: "2.5.1" # The tag for the Caddy Docker image
